@@ -13,6 +13,7 @@ namespace VisualKeyloggerDetector
             public string Name;
             public string Path;
             public ulong WriteCount;
+            public ulong Id;
         }
 
         public List<ProgramInfo> StartPrograms = new List<ProgramInfo>();
