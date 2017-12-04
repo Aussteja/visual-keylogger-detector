@@ -34,6 +34,7 @@ namespace VisualKeyloggerDetector
                 info.Name = item.Name;
                 info.Path = item.ExecutablePath;
                 info.WriteCount = item.WriteTransferCount.Value;
+                info.Id = item.ProcessId.Value;
                 m_Test.StartPrograms.Add(info);
             }
         }
@@ -67,7 +68,21 @@ namespace VisualKeyloggerDetector
                 info.Name = item.Name;
                 info.Path = item.ExecutablePath;
                 info.WriteCount = item.WriteTransferCount.Value;
+                info.Id = item.ProcessId.Value;
                 m_Test.EndPrograms.Add(info);
+            }
+
+            foreach (var startInfo in m_Test.StartPrograms)
+            {
+                var endInfo = m_Test.EndPrograms.FirstOrDefault(info => info.Id == startInfo.Id);
+                if (endInfo == null)
+                    continue;
+
+                long writeDif = (long)endInfo.WriteCount - (long)startInfo.WriteCount;
+                if (writeDif < 50)
+                    continue;
+
+                Console.WriteLine(startInfo.Name);
             }
         }
     }
