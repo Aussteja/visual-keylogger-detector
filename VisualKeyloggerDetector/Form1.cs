@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Management;
 
 namespace VisualKeyloggerDetector
 {
@@ -20,6 +21,8 @@ namespace VisualKeyloggerDetector
         private void button1_Click(object sender, EventArgs e)
         {
             VirtualInput.SendInput('v');
+            var processes = Win32_Process.GetAllProcesses();
+            Console.WriteLine(processes.Count);
         }
     }
 }
