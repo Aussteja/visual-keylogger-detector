@@ -14,76 +14,50 @@ namespace VisualKeyloggerDetector
     public partial class Form1 : Form
     {
         private Timer m_Timer;
-        private Test m_Test;
-        private int m_KeyCount = 100;
+        private Experiment m_Experiment;
 
         public Form1()
         {
             InitializeComponent();
 
-            m_Timer = new Timer();
-            m_Timer.Interval = 100;
-            m_Timer.Start();
-            m_Timer.Tick += new EventHandler(timer_Tick);
-
-            m_Test = new Test();
-            var processes = Win32_Process.GetAllProcesses();
-            foreach (var item in processes)
-            {
-                var info = new Test.ProgramInfo();
-                info.Name = item.Name;
-                info.Path = item.ExecutablePath;
-                info.WriteCount = item.WriteTransferCount.Value;
-                info.Id = item.ProcessId.Value;
-                m_Test.StartPrograms.Add(info);
-            }
+            m_Experiment = new Experiment();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            return;
-            VirtualInput.SendInput('v');
-            var processes = Win32_Process.GetAllProcesses();
-            Console.WriteLine(processes.Count);
+            m_Experiment.Start();
+
+            //VirtualInput.SendInput('v');
+            //var processes = Win32_Process.GetAllProcesses();
+            //Console.WriteLine(processes.Count);
         }
 
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            VirtualInput.SendInput('a');
-            m_KeyCount--;
-            if (m_KeyCount == 0)
-            {
-                m_Timer.Stop();
+        //private void finish_Test()
+        //{
+        //    var processes = Win32_Process.GetAllProcesses();
+        //    foreach (var item in processes)
+        //    {
+        //        var info = new Test.ProgramInfo();
+        //        info.Name = item.Name;
+        //        info.Path = item.ExecutablePath;
+        //        info.WriteCount = item.WriteTransferCount.Value;
+        //        info.Id = item.ProcessId.Value;
+        //        m_Test.EndPrograms.Add(info);
+        //    }
 
-                finish_Test();
-            }
-        }
+        //    foreach (var startInfo in m_Test.StartPrograms)
+        //    {
+        //        var endInfo = m_Test.EndPrograms.FirstOrDefault(info => info.Id == startInfo.Id);
+        //        if (endInfo == null)
+        //            continue;
 
-        private void finish_Test()
-        {
-            var processes = Win32_Process.GetAllProcesses();
-            foreach (var item in processes)
-            {
-                var info = new Test.ProgramInfo();
-                info.Name = item.Name;
-                info.Path = item.ExecutablePath;
-                info.WriteCount = item.WriteTransferCount.Value;
-                info.Id = item.ProcessId.Value;
-                m_Test.EndPrograms.Add(info);
-            }
+        //        long writeDif = (long)endInfo.WriteCount - (long)startInfo.WriteCount;
+        //        if (writeDif < 50)
+        //            continue;
 
-            foreach (var startInfo in m_Test.StartPrograms)
-            {
-                var endInfo = m_Test.EndPrograms.FirstOrDefault(info => info.Id == startInfo.Id);
-                if (endInfo == null)
-                    continue;
-
-                long writeDif = (long)endInfo.WriteCount - (long)startInfo.WriteCount;
-                if (writeDif < 50)
-                    continue;
-
-                Console.WriteLine(startInfo.Name);
-            }
-        }
+        //        Console.WriteLine(startInfo.Name);
+        //        Console.WriteLine(writeDif);
+        //    }
+        //}
     }
 }

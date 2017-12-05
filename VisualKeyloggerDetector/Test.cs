@@ -18,5 +18,8 @@ namespace VisualKeyloggerDetector
 
         public List<ProgramInfo> StartPrograms = new List<ProgramInfo>();
         public List<ProgramInfo> EndPrograms = new List<ProgramInfo>();
+
+        public int KeyPresses;
+        public double PressAmount; // KeyPresses/MaxKeyPresses
     }
 }
